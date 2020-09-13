@@ -1,3 +1,6 @@
+import sys
+import constants
+
 def display_legend():
     print("\n===========================")
     print("_ : Empty")
@@ -15,7 +18,7 @@ def input_dimensions():
 def generate_board(rows, columns):
     row = list()
     for i in range(columns):
-        row.append(0)  # represents empty cell
+        row.append(constants.EMPTY)
 
     board = list()
     for i in range(rows):
@@ -45,41 +48,59 @@ def display_board(board, rows, columns):
             elif x > columns:  # last column
                 print("\\" + str(y), end="")
             else:  # position is on the board
-                if board[y - 1][x - 1] == 1:
+                if board[y - 1][x - 1] == constants.BLACK:
                     print("\\x", end="")  # display black
-                elif board[y - 1][x - 1] == 2:
+                elif board[y - 1][x - 1] == constants.WHITE:
                     print("\\o", end="")  # display white
                 else:
                     print("\\_", end="")  # display empty
         print()
 
 
-def enter_command(current_turn, board):
-    if current_turn == 0:
-        display_legend()
-        command = input("Black's turn to move: ").upper()
-    else:
-        display_legend()
-        command = input("White's turn to move: ").upper()
+def validate_command(command):
+    if command[0].isalpha() and command[1:].isdigit():
+        return True
+    return False
 
-    row = ord(command[0]) - 65
+
+def validate_position(command):
+    row = ord(command[0]) - ord("A")
+    column = int(command[1:]) - 1
+    return False
+
+
+def enter_command(current_turn, board):
+    display_legend()
+    if current_turn == constants.BLACK:
+        print("Black's turn to move.")
+    else:
+        print("White's turn to move.")
+
+    command = input("Enter a position or command: ").upper()
+    while not validate_command(command):
+        if command == "QUIT":
+            sys.exit(0)
+        command = input("Enter a position or command: ").upper()
+
+    row = ord(command[0]) - ord("A")
     column = int(command[1:]) - 1
 
-    if current_turn == 0:
-        board[column][row] = 1
+    if current_turn == constants.BLACK:
+        board[column][row] = constants.BLACK
+        current_turn = constants.WHITE
     else:
-        board[column][row] = 2
+        board[column][row] = constants.WHITE
+        current_turn = constants.BLACK
 
-    return board
+    return board, current_turn
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     rows, columns = input_dimensions()
 
     board = generate_board(rows, columns)
 
-    currentTurn = 0
-    while 1:
+    current_turn = constants.BLACK
+    while True:
         display_board(board, rows, columns)
-        board = enter_command(currentTurn, board)
-        currentTurn = (currentTurn + 1) % 2
+        board, current_turn = enter_command(current_turn, board)
