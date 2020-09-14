@@ -12,9 +12,9 @@ TO DO:
 
 class HexBoard:
 
-    def __init__(self, rows=0, columns=0):
+    def __init__(self, rows, columns):
         """
-        parameters: int rows (default 0) and int columns (default 0)
+        parameters: int rows and int columns
         attributes: int rows, int columns and 2D array containing ints,
         1D array containing tuples of ints
         """
@@ -42,9 +42,9 @@ class HexBoard:
     def display_board(self):  # TO DO: clean up loops and use less if statements
         """
         displays the board into a more readable hex style board with a letter
-        margin and a number margin, but uses tilted squares instead of hexagons
+        margin and a number margin, but uses angled squares instead of hexagons
         """
-        spacing_offset = 0  # controls level of tilt for squares
+        spacing_offset = -1  # progressive spacing
         print()
         for y in range(self.rows + 2):  # accounts for letter axis (+2)
             # spacing for rows
@@ -56,8 +56,7 @@ class HexBoard:
                 print(" " * y, end="")
             else:  # double digit row
                 print(" " * (y - 1), end="")
-            if y > 0:
-                spacing_offset += 1  # increase level of tilt
+            spacing_offset += 1  # increase progressive spacing
             for x in range(self.columns + 2):  # accounts for number axis (+2)
                 if y < 1 or y > self.rows:  # first or last row
                     print(chr(x + ord("A")), end=" ")  # print letter axis
@@ -74,7 +73,7 @@ class HexBoard:
                         print("\\o", end="")  # print white tile
                     else:
                         print("\\_", end="")  # print empty tile
-            print("\n" + " " * spacing_offset, end="")  # adds increased tilt per line
+            print("\n" + " " * spacing_offset, end="")  # adds progressive spacing
 
     def place_stone(self, row, column, stone):
         """
