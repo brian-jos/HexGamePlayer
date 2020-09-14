@@ -39,30 +39,32 @@ class HexBoard:
             print(self.board_array[row_array])
         return ""  # requires a string to be returned
 
-    def display_board(self):  # TO DO: clean up messy code
+    def display_board(self):  # TO DO: clean up loops and use less if statements
         """
         displays the board into a more readable hex style board with a letter
         margin and a number margin, but uses tilted squares instead of hexagons
         """
+        spacing_offset = 0  # controls level of tilt for squares
         print()
         for y in range(self.rows + 2):  # accounts for letter axis (+2)
             # spacing for rows
-            if y < 1 or y > self.rows:  # first or last row
+            if y < 1:  # first or last row
                 print("  ", end="")
+            elif y > self.rows:  # last row
+                print(" ", end="")
             if y < 10:  # single digit row
                 print(" " * y, end="")
             else:  # double digit row
                 print(" " * (y - 1), end="")
-            letter_axis = "A"  # starting letter of letter axis
+            if y > 0:
+                spacing_offset += 1  # increase level of tilt
             for x in range(self.columns + 2):  # accounts for number axis (+2)
                 if y < 1 or y > self.rows:  # first or last row
-                    print(letter_axis, end=" ")  # print letter axis
-                    letter_axis = chr(ord(letter_axis) + 1)  # increment letter
+                    print(chr(x + ord("A")), end=" ")  # print letter axis
                     if x > self.columns - 2:  # letters won't exceed number of columns
                         break
-                # print number axis
                 elif x < 1:  # first column
-                    print(y, end="")
+                    print(y, end="")  # print number axis
                 elif x > self.columns:  # last column
                     print("\\" + str(y), end="")
                 else:  # position is on the board
@@ -72,7 +74,7 @@ class HexBoard:
                         print("\\o", end="")  # print white tile
                     else:
                         print("\\_", end="")  # print empty tile
-            print()
+            print("\n" + " " * spacing_offset, end="")  # adds increased tilt per line
 
     def place_stone(self, row, column, stone):
         """
@@ -129,7 +131,7 @@ def display_help():
     print('"quit" = terminate the program\n')
 
 
-def input_command(current_turn, board):
+def input_command(current_turn, board):  # TO DO: reformat this into a cleaner while loop
     """
     parameters: int current_turn, 2D int array board
     - takes a command and checks if its in the format A00 (LETTER NUMBER)
@@ -143,7 +145,7 @@ def input_command(current_turn, board):
     else:
         print("White's turn.")
 
-    while True:  # TO DO: reformat this into a cleaner while loop
+    while True:
         command = input('Enter a position (ex: "B3") or a command (ex: "help"): ').upper()
         if command == "QUIT":
             print("Quitting program...")
