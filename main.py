@@ -4,7 +4,7 @@ import sys
 """
 TO DO:
 - end the game when a player successfully reaches a side
-- implement a history system (and undo)
+- implement swap rule
 - implement algorithm to play against a player (solver)
 - clean up code and find bugs
 """
@@ -15,11 +15,13 @@ class HexBoard:
     def __init__(self, rows=0, columns=0):
         """
         parameters: int rows (default 0) and int columns (default 0)
-        attributes: int rows, int columns and 2D array containing ints
+        attributes: int rows, int columns and 2D array containing ints,
+        1D array containing tuples of ints
         """
         self.rows = rows
         self.columns = columns
         self.board_array = list()
+        self.history = list()  # (y, x, stone_color)
 
         # create 2D array from rows and columns
         row_array = list()
@@ -78,6 +80,15 @@ class HexBoard:
         places an int at the specified location, black is 1 and white is 2
         """
         self.board_array[row][column] = stone
+        self.history.append((row, column, stone))
+
+    def undo_placement(self):
+        """
+        replaces the last position in history with an empty stone
+        """
+        row, column, stone = self.history[-1]
+        self.board_array[row][column] = constants.EMPTY
+        self.history.pop()
 
     def valid_placement(self, row, column):
         """
@@ -101,7 +112,7 @@ def input_dimension(dimension_name, max_dimension):
     return int(dimension)
 
 
-def display_help():
+def display_guide():
     """
     prints a guide for the colors and their axis
     """
@@ -110,6 +121,12 @@ def display_help():
     print("x : Black (Letter Axis)")
     print("o : White (Number Axis)")
     print("===========================")
+
+
+def display_help():
+    print('\n"help" = display a list of available commands')
+    print('"undo" = undo the last placement')
+    print('"quit" = terminate the program\n')
 
 
 def input_command(current_turn, board):
@@ -127,10 +144,18 @@ def input_command(current_turn, board):
         print("White's turn.")
 
     while True:  # TO DO: reformat this into a cleaner while loop
-        command = input('Enter a position (ex: B3) or type "quit" to terminate: ').upper()
+        command = input('Enter a position (ex: "B3") or a command (ex: "help"): ').upper()
         if command == "QUIT":
             print("Quitting program...")
             sys.exit(0)
+        if command == "HELP":
+            display_help()
+            continue
+        if command == "UNDO" and len(board.history) > 0:
+            board.undo_placement()
+            if current_turn == constants.BLACK:  # alternate turns
+                return constants.WHITE
+            return constants.BLACK
         # format: A00 (LETTER NUMBER)
         if not (len(command) > 1 and command[0].isalpha() and command[1:].isdigit()):
             continue  # wrong format
@@ -141,8 +166,7 @@ def input_command(current_turn, board):
         board.place_stone(row, column, current_turn)
         break
 
-    # alternate turns
-    if current_turn == constants.BLACK:
+    if current_turn == constants.BLACK:  # alternate turns
         return constants.WHITE
     return constants.BLACK
 
@@ -157,5 +181,5 @@ if __name__ == "__main__":
     current_turn = constants.BLACK
     while True:
         board.display_board()
-        display_help()
+        display_guide()
         current_turn = input_command(current_turn, board)
