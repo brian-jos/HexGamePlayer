@@ -173,7 +173,6 @@ def input_command(current_turn, board):  # TO DO: reformat this into a cleaner w
 
 
 if __name__ == "__main__":
-    print("Written on Python 3.8.6\nMinimum requirement: Python 3.6\n")
     rows = input_dimension("rows", constants.MAX_ROWS)
     columns = input_dimension("columns", constants.MAX_COLUMNS)
     board = HexBoard(rows, columns)
