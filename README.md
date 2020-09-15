@@ -1,2 +1,2 @@
 # HexGamePlayer
-Minimum requirement: Python3
+Minimum requirement: Python 3.0
