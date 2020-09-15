@@ -49,16 +49,14 @@ class HexBoard:
         for y in range(self.rows + 2):  # accounts for letter axis (+2)
             # spacing for rows
             if y < 1:  # first row
-                print("  ", end="")
-            elif y > self.rows:  # last row
                 print(" ", end="")
-            if y < 10:  # single digit row
-                print(" " * y, end="")
-            else:  # double digit row
+            if 9 < y <= self.rows:  # double digit row (excluding last row)
                 print(" " * (y - 1), end="")
+            else:  # single digit row
+                print(" " * y, end="")
             for x in range(self.columns + 2):  # accounts for number axis (+2)
                 if y < 1 or y > self.rows:  # first or last row
-                    print(chr(x + ord("A")), end=" ")  # print letter axis
+                    print(" " + chr(x + ord("A")), end="")  # print letter axis
                     if x > self.columns - 2:  # letters won't exceed number of columns
                         break
                 elif x < 1:  # first column
