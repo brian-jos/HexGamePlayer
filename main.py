@@ -56,13 +56,13 @@ class HexBoard:
                 print(end=" " * y)
             for x in range(self.columns + 2):  # accounts for number axis (+2)
                 if y < 1 or y > self.rows:  # first or last row
-                    print(end=f" {chr(x + ord('A'))}")  # print letter axis
+                    print(" ", end=chr(x + ord("A")))  # print letter axis
                     if x > self.columns - 2:  # letters won't exceed number of columns
                         break
                 elif x < 1:  # first column
-                    print(end=f"{y}")  # print number axis
+                    print(end=str(y))  # print number axis
                 elif x > self.columns:  # last column
-                    print(end=f"\\{y}")
+                    print("\\", end=str(y))
                 else:  # position is on the board
                     if self.board_array[y - 1][x - 1] == constants.BLACK:
                         print(end="\\x")  # print black tile
@@ -70,7 +70,7 @@ class HexBoard:
                         print(end="\\o")  # print white tile
                     else:
                         print(end="\\_")  # print empty tile
-            print(end=f"\n{' ' * spacing_offset}")  # adds progressive spacing
+            print("\n", end=" " * spacing_offset)  # adds progressive spacing
             spacing_offset += 1  # increase progressive spacing
 
     def place_stone(self, row, column, stone):
@@ -105,9 +105,11 @@ def input_dimension(dimension_name, max_dimension):
     parameters: string dimension_name, int max_dimension
     general use function to get the input of a dimension
     """
-    dimension = input(f"Enter # of {dimension_name} (max {max_dimension}): ")
+    dimension = input("Enter # of " + dimension_name \
+                      + " (max " + str(max_dimension) + "): ")
     while not (dimension.isdigit() and 0 < int(dimension) <= max_dimension):
-        dimension = input(f"Enter # of {dimension_name} (max {max_dimension}): ")
+        dimension = input("Enter # of " + dimension_name \
+                          + " (max " + str(max_dimension) + "): ")
     return int(dimension)
 
 
@@ -171,7 +173,7 @@ def input_command(current_turn, board):  # TO DO: reformat this into a cleaner w
 
 
 if __name__ == "__main__":
-    print("\nMinimum requirement: Python 3.6.x")
+    print("\nMinimum requirement: Python3")
     rows = input_dimension("rows", constants.MAX_ROWS)
     columns = input_dimension("columns", constants.MAX_COLUMNS)
     board = HexBoard(rows, columns)
