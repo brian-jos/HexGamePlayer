@@ -44,11 +44,11 @@ class HexBoard:
         displays the board into a more readable hex style board with a letter
         margin and a number margin, but uses angled squares instead of hexagons
         """
-        spacing_offset = -1  # progressive spacing
+        spacing_offset = 0  # progressive spacing
         print()
         for y in range(self.rows + 2):  # accounts for letter axis (+2)
             # spacing for rows
-            if y < 1:  # first or last row
+            if y < 1:  # first row
                 print("  ", end="")
             elif y > self.rows:  # last row
                 print(" ", end="")
@@ -56,7 +56,6 @@ class HexBoard:
                 print(" " * y, end="")
             else:  # double digit row
                 print(" " * (y - 1), end="")
-            spacing_offset += 1  # increase progressive spacing
             for x in range(self.columns + 2):  # accounts for number axis (+2)
                 if y < 1 or y > self.rows:  # first or last row
                     print(chr(x + ord("A")), end=" ")  # print letter axis
@@ -74,6 +73,7 @@ class HexBoard:
                     else:
                         print("\\_", end="")  # print empty tile
             print("\n" + " " * spacing_offset, end="")  # adds progressive spacing
+            spacing_offset += 1  # increase progressive spacing
 
     def place_stone(self, row, column, stone):
         """
