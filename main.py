@@ -147,7 +147,7 @@ def input_command(current_turn, board):  # TO DO: reformat this into a cleaner w
     while True:
         command = input('Enter a position (ex: "B3") or a command (ex: "help"): ').upper()
         if command == "QUIT":
-            print("Quitting program...")
+            print("Quitting program...\n")
             sys.exit(0)
         if command == "HELP":
             display_help()
