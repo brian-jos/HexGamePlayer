@@ -49,28 +49,28 @@ class HexBoard:
         for y in range(self.rows + 2):  # accounts for letter axis (+2)
             # spacing for rows
             if y < 1:  # first row
-                print(" ", end="")
+                print(end=" ")
             if 9 < y <= self.rows:  # double digit row (excluding last row)
-                print(" " * (y - 1), end="")
+                print(end=" " * (y - 1))
             else:  # single digit row
-                print(" " * y, end="")
+                print(end=" " * y)
             for x in range(self.columns + 2):  # accounts for number axis (+2)
                 if y < 1 or y > self.rows:  # first or last row
-                    print(" " + chr(x + ord("A")), end="")  # print letter axis
+                    print(end=f" {chr(x + ord('A'))}")  # print letter axis
                     if x > self.columns - 2:  # letters won't exceed number of columns
                         break
                 elif x < 1:  # first column
-                    print(y, end="")  # print number axis
+                    print(end=f"{y}")  # print number axis
                 elif x > self.columns:  # last column
-                    print("\\" + str(y), end="")
+                    print(end=f"\\{y}")
                 else:  # position is on the board
                     if self.board_array[y - 1][x - 1] == constants.BLACK:
-                        print("\\x", end="")  # print black tile
+                        print(end="\\x")  # print black tile
                     elif self.board_array[y - 1][x - 1] == constants.WHITE:
-                        print("\\o", end="")  # print white tile
+                        print(end="\\o")  # print white tile
                     else:
-                        print("\\_", end="")  # print empty tile
-            print("\n" + " " * spacing_offset, end="")  # adds progressive spacing
+                        print(end="\\_")  # print empty tile
+            print(end=f"\n{' ' * spacing_offset}")  # adds progressive spacing
             spacing_offset += 1  # increase progressive spacing
 
     def place_stone(self, row, column, stone):
@@ -171,6 +171,7 @@ def input_command(current_turn, board):  # TO DO: reformat this into a cleaner w
 
 
 if __name__ == "__main__":
+    print("\nMinimum requirement: Python 3.6.x")
     rows = input_dimension("rows", constants.MAX_ROWS)
     columns = input_dimension("columns", constants.MAX_COLUMNS)
     board = HexBoard(rows, columns)
