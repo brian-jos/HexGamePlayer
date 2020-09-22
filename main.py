@@ -1,5 +1,3 @@
-import sys
-
 """
 TO DO:
 - end the game when a player successfully reaches a side
@@ -152,8 +150,7 @@ def input_command(current_turn, board):  # TO DO: reformat this into a cleaner w
     while True:
         command = input('Enter a position (ex: "B3") or a command (ex: "help"): ').upper()
         if command == "QUIT":
-            print("Quitting program...\n")
-            sys.exit(0)
+            return "QUIT"
         if command == "HELP":
             display_help()
             continue
@@ -185,7 +182,8 @@ if __name__ == "__main__":
 
     # alternate turns and loop
     current_turn = BLACK
-    while True:
+    while current_turn != "QUIT":
         board.display_board()
         display_guide()
         current_turn = input_command(current_turn, board)
+    print("Quitting program...\n")
