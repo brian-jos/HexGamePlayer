@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 TO DO:
 - end the game when a player successfully reaches a side
