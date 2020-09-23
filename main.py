@@ -153,12 +153,9 @@ def input_command(current_turn, board):  # TO DO: reformat this into a cleaner w
             return "QUIT"
         if command == "HELP":
             display_help()
-            continue
         if command == "UNDO" and len(board.history) > 0:
             board.undo_placement()
-            if current_turn == BLACK:  # alternate turns
-                return WHITE
-            return BLACK
+            break
         # format: A00 (LETTER NUMBER)
         if not (len(command) > 1 and command[0].isalpha() and command[1:].isdigit()):
             continue  # wrong format
