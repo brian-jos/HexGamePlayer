@@ -1,5 +1,7 @@
 """
 TO DO:
+- implement numpy library to replace regular 2D array
+- refactor magic numbers and strings
 - end the game when a player successfully reaches a side
 - implement swap rule
 - implement algorithm to play against a player (solver)
